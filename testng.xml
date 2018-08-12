@@ -2,7 +2,7 @@
 <suite name="Bio Big Box Regression">
     <test name="testFactory">
         <classes>
-            <class name="sample.FactoryTest" />
+            <class name="tests.LoginTest" />
         </classes>
     </test>
 </suite>

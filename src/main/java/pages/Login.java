@@ -1,42 +1,46 @@
 package pages;
 
-	import org.apache.log4j.Logger;
-	import org.openqa.selenium.WebDriver;
-	import org.testng.annotations.Parameters;
-	import org.testng.annotations.Test;
-	import utils.CommonUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.seleniumhq.jetty7.util.log.Log;
 
-	import java.util.ArrayList;
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 
-	/**
-	 * Created by duongnapham on 2/12/15.
-	 */
-	public class Login {
+public class Login {
 
-	    private final Logger logger = Logger.getLogger(Login.class);
-	    private CommonUtils commonUtils = new CommonUtils();
-	    private WebDriver driver;
+	WebDriver driver;
+	WebDriverWait wait;
+	By lnkSignIn = By.id("loginLink");
+	By txtEmail = By.name("uEmail");
+	By txtPassword = By.name("password");
+	By btnLogin = By.id("sing_in-btn");
+	By chkboxRememberMe = By.name("is_remember_me");
+	By lnkRegister = By.id("registerLink");
+	By lnkForgotPwd = By.id("frg_pass");
 
-	    @Test
-	    public void openBrowserWithUrl() throws Exception{
-	        try{
-	            String browserName = "Chrome";
-	            System.out.println("Open browser " + browserName);
-	            ArrayList<String> listURLs = commonUtils.getListURLs();
-	            for(int i=0; i<listURLs.size(); i++){
-	                System.out.println("Access url:  " + listURLs.get(i) + " on browser " + browserName);
-	                driver = commonUtils.openBrowser(browserName, listURLs.get(i));
-	                System.out.println(driver.toString());
-	                Thread.sleep(3000L);
-	                System.out.println("Closing browser now .........");
-	                logger.info("Quit ....");
-	                driver.quit();
-	            }
-	        }
-	        catch (Exception e){
-	            logger.error("testURLs: " + e.getMessage());
-	        }
-	    }
+	public Login(WebDriver driver) {
+		this.driver = driver;
+	}
 
-	
+	@SuppressWarnings("deprecation")
+	public void clickSignIn() {
+		WebElement signIn = null;
+		wait = new WebDriverWait(driver, 10, 100);
+		try {
+			signIn = wait.until(ExpectedConditions.elementToBeClickable(lnkSignIn));
+		} catch (ElementNotFoundException | ElementNotVisibleException e) {
+			if(e instanceof ElementNotFoundException)
+				Log.warn("Element is not found using locator " + lnkSignIn);
+			else
+				Log.warn("Element is displayed, but it is not visible");
+			e.printStackTrace();
+		}
+		
+		signIn.click();
+	}
+
 }
